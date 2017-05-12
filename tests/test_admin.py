@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from rest_framework_api_key.models import APIKey
+
 from rest_framework_api_key.helpers import generate_key
+from rest_framework_api_key.models import APIKey
 
 
 class LoggedInAdminTestCase(TestCase):
@@ -27,6 +28,7 @@ class APIAuthenticatedTestCase(TestCase):
     def setUp(self):
         self.app_key = APIKey.objects.create(name=self.APP_NAME, key=generate_key())
         self.header = {'HTTP_API_KEY': self.app_key.key}
+        self.query_param = '%s=%s' % ('api_key', self.app_key.key)
 
 
 class AdminTestCase(LoggedInAdminTestCase, APIAuthenticatedTestCase):
